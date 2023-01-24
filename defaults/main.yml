@@ -1,0 +1,6 @@
+---
+# Directory for download keycloak
+dir_keycloak: /opt/keycloak
+
+# version keycloak
+version_keycloak: '20.0.3'

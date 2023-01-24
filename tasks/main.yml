@@ -1,0 +1,41 @@
+---
+- name: Creating a system group "keycloak"
+  group:
+    name: keycloak
+    state: present
+    system: true
+
+- name: Adding a user and a group
+  user:
+    name: keycloak
+    shell: /sbin/nologin
+    system: true 
+    group: keycloak
+    home: /var/lib/keycloak
+
+- name: Creating a directory for the 'keycloak' distribution
+  file: 
+    path: '{{ dir_keycloak }}'
+    recurse: yes
+    state: directory
+
+- name: Download 'keycloak' distribution
+  get_url:
+    url: https://github.com/keycloak/keycloak/releases/download/{{ version_keycloak }}/keycloak-{{ version_keycloak }}.zip
+    dest: '{{ dir_keycloak }}'   
+
+- name: Unzip 'keycloak' distribution
+  unarchive: 
+    src: '{{ dir_keycloak }}/keycloak-{{ version_keycloak }}.zip'
+    dest: '{{ dir_keycloak }}'
+    owner: keycloak
+    group: keycloak
+    remote_src: yes
+
+- name: Assign launch rights
+  file: 
+    path: '{{ dir_keycloak }}/keycloak-{{ version_keycloak }}/bin'
+    state: directory
+    mode: o+x
+
+- name: Install OpenJDK
