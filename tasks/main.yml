@@ -39,3 +39,6 @@
     mode: o+x
 
 - name: Install OpenJDK
+  dnf:
+    name: java-11-openjdk
+    state: latest
